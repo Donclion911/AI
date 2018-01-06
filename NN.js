@@ -5,12 +5,13 @@ next=0;
 setInterval(_goahead,0)
 shots=[];
 shot=class{
-    constructor(speed,angle)
+    constructor(speed,angle,path)
     {
         this.x=temp.width/2;
         this.y=temp.height-20;
         this.speed=speed;
         this.angle=angle;
+        this.path=path;
     }
     show()
     {
