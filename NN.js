@@ -4,6 +4,21 @@ temp.style.backgroundColor="gray";
 next=0;
 setInterval(_goahead,0)
 shots=[];
+target=class{
+    constructor(x,y,size){
+        this.x=x;
+        this.y=y;
+        this.size=size;
+    }
+    show(){
+        x.beginPath();
+        x.arc(this.x,this.y,this.size,0,2*Math.PI);
+        x.strokeStyle="red";
+        x.stroke();
+        x.closePath();
+    }
+}
+hit=new target(temp.width/2,40,10);
 shot=class{
     constructor(speed,angle,path)
     {
@@ -12,42 +27,47 @@ shot=class{
         this.speed=speed;
         this.angle=angle;
         this.path=path;
+        this.touched=false;
     }
     show()
     {
         x.beginPath();
         x.save()
-        x.rotate(this.angle*(Math.PI/180));
         x.rect(this.x,this.y,5,20);
         x.restore();
         x.strokeStyle="white";
         x.stroke();
         x.closePath();
-        this.y-=this.speed*Math.sin(this.angle);
-        this.x-=this.speed*Math.cos(this.angle);
-        if(this.y<=0||this.x<=0||this.x>temp.width)
+        if(!this.touched)
         {
-            this.y=temp.height-20;
-            this.x=temp.width/2;
+            this.y-=this.speed*Math.sin(this.angle);
+            this.x-=this.speed*Math.cos(this.angle);
+            if(this.y<=0||this.x<=0||this.x>temp.width)
+            {
+                this.y=temp.height-20;
+                this.x=temp.width/2;
+            }
+            if(this.y<=hit.y&&this.y>=hit.y-20 && this.x>=hit.x-15 &&this.x<=hit.x+15)
+            {
+                console.log("hit");
+                this.touched=true;
+            }
         }
     }
 }
-
 function _goahead()
 {
     x.clearRect(0,0,temp.width,temp.height);
-    angles=[45,30,15,5,-5,-15,-30,-45]; 
     if(shots.length==0)
     {   
-        for(i=1;i<=10;i++)
+        for(i=1;i<=100;i++)
         {
-            diracetion=Math.round(Math.random()*7);
-            shots.push(new shot(Math.random()*(1-0.2)+0.2, angles[diracetion]));
+            shots.push(new shot(1, Math.random()*(180-5)+5));
         }
     }
+    hit.show();
     shots.forEach(function(next) {
         diracetion=Math.round(Math.random()*7);
-        //next.angle=angles[diracetion];
         next.show();
     });
 }
