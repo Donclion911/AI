@@ -35,7 +35,7 @@ block=class{
         x.closePath();
     }
 }
-blck= new block(50,temp.height/2,1080,5);
+blck= new block(400,temp.height/2,1080,5);
 hit=new target(temp.width/2,40,30);
 shot=class{
     constructor(speed,angle)
@@ -66,14 +66,13 @@ shot=class{
             {
                 this.y=temp.height-20;
                 this.x=temp.width/2;
-                this.force=null;
                 this.angle=Math.random()*(180-5)+5;
             }
             if(this.y<=0||this.y>=temp.height)
             {
-                if(this.step>0)
+                if(this.force==null)
                 {
-                    this.y=temp.height-20;
+                    this.y=temp.height;
                     this.x=temp.width/2;
                 }
                 if(DNA.length!=0)
@@ -85,7 +84,7 @@ shot=class{
                         if(this.step>=this.force.length)
                         {
                             this.step=0;
-                            this.force=DNA[Math.round(Math.random()*(DNA.length-1))];
+                            this.force=DNA[DNA.length-1];
                         }
                     }
                     else
@@ -102,8 +101,8 @@ shot=class{
             {
                 if(this.force!=null)
                 {
-                    this.angle=this.force[this.step];
                     this.step++;
+                    this.angle=this.force[this.step];
                 }
                 else
                 {this.angle=Math.random()*(180-5)+5;}
@@ -111,6 +110,8 @@ shot=class{
             if(this.x>=blck.x+2&&this.x<=blck.x+blck.w&&this.y<=blck.y&&this.y>=blck.y-blck.h-25)
             {
                 this.y=temp.height;
+                this.force=null;
+                this.angle=Math.random()*(180-5)+5;
             }
             if(this.y<=hit.y+hit.size&&this.y>=hit.y-hit.size && this.x>=hit.x-hit.size &&this.x<=hit.x+hit.size)
             {
@@ -142,7 +143,7 @@ function _goahead()
     x.clearRect(0,0,temp.width,temp.height);
     if(shots.length==0)
     {   
-        for(i=1;i<=500;i++)
+        for(i=1;i<=1000;i++)
         {
             shots.push(new shot(1, Math.random()*(180-5)+5));
         }
