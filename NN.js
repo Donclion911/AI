@@ -14,7 +14,7 @@ target=class{
     show(){
         x.beginPath();
         x.arc(this.x,this.y,this.size,0,2*Math.PI);
-        x.strokeStyle="red";
+        x.strokeStyle="white";
         x.stroke();
         x.closePath();
     }
@@ -28,12 +28,22 @@ block=class{
         this.h=h;
     }
     show(){
+        x.beginPath();
+        x.strokeStyle="red";
         x.rect(this.x,this.y,this.w,this.h);
         x.stroke();
+        x.closePath();
     }
 }
-blck= new block(150,temp.height/2,300,5);
-hit=new target(temp.width/2,40,10);
+map=class{
+    constructor(ob,count)
+    {
+        this.ob=ob;
+        this.count=this.count;
+    }
+}
+blck= new block(20,temp.height/2,1080,5);
+hit=new target(temp.width/2,40,30);
 shot=class{
     constructor(speed,angle,path)
     {
@@ -78,13 +88,13 @@ shot=class{
                         }
                         else
                         {
-                            this.temp=0;
-                            this.force=DNA[Math.round(Math.random()*(DNA.length-1))];
+                            this.step=0;
+                            this.force=DNA[DNA.length-1];
                         }
                     }
                     else
                     {
-                        this.force=DNA[Math.round(Math.random()*(DNA.length-1))];
+                        this.force=DNA[DNA.length-1];
                     }
                 }
                 else
@@ -92,11 +102,15 @@ shot=class{
                     this.angle=Math.random()*(180-5)+5;
                 }
             }
-            if(this.x<=0||this.x>=temp.width||this.x>=blck.x&&this.x<=blck.x+blck.w&&this.y<=blck.y&&this.y>=blck.y-blck.h)
+            if(this.x<=0||this.x>=temp.width)
             {
                 this.angle=Math.random()*(180-5)+5;
             }
-            if(this.y<=hit.y+11&&this.y>=hit.y-11 && this.x>=hit.x-11 &&this.x<=hit.x+11)
+            if(this.x>=blck.x+2&&this.x<=blck.x+blck.w&&this.y<=blck.y&&this.y>=blck.y-blck.h-25)
+            {
+                this.y=temp.height;
+            }
+            if(this.y<=hit.y+hit.size&&this.y>=hit.y-hit.size && this.x>=hit.x-hit.size &&this.x<=hit.x+hit.size)
             {
                 console.log("hit");
                 this.touched=true;
@@ -112,7 +126,7 @@ function _goahead()
     x.clearRect(0,0,temp.width,temp.height);
     if(shots.length==0)
     {   
-        for(i=1;i<=1000;i++)
+        for(i=1;i<=5000;i++)
         {
             shots.push(new shot(1, Math.random()*(180-5)+5));
         }
