@@ -35,13 +35,6 @@ block=class{
         x.closePath();
     }
 }
-map=class{
-    constructor(ob,count)
-    {
-        this.ob=ob;
-        this.count=this.count;
-    }
-}
 blck= new block(20,temp.height/2,1080,5);
 hit=new target(temp.width/2,40,30);
 shot=class{
