@@ -43,6 +43,9 @@ shot=class{
         this.angle=angle;
         this.path=path;
         this.touched=false;
+        this.map=[];
+        this.step=0;
+        this.force=null;
     }
     show()
     {
@@ -59,29 +62,49 @@ shot=class{
             this.x-=this.speed*Math.cos(this.angle);
             if(this.y<=0||this.y>=temp.height)
             {
-                this.y=temp.height-20;
-                this.x=temp.width/2;
+                if(this.step>0)
+                {
+                    this.y=temp.height-20;
+                    this.x=temp.width/2;
+                }
                 if(DNA.length!=0)
                 {
-                    this.angle=DNA[0].angle;
+                    if(this.force!=null)
+                    {
+                        this.angle=this.force[this.step];
+                        if(this.step<this.force.length-1)
+                        {
+                            this.step++;
+                        }
+                        else
+                        {
+                            this.temp=0;
+                            this.force=DNA[Math.round(Math.random()*(DNA.length-1))];
+                        }
+                    }
+                    else
+                    {
+                        this.force=DNA[Math.round(Math.random()*(DNA.length-1))];
+                    }
                 }
                 else
                 {
                     this.angle=Math.random()*(180-5)+5;
                 }
             }
-            else if(this.x<=0||this.x>=temp.width||this.x>=blck.x&&this.x<=blck.x+blck.w&&this.y<=blck.y&&this.y>=blck.y-blck.h)
+            if(this.x<=0||this.x>=temp.width||this.x>=blck.x&&this.x<=blck.x+blck.w&&this.y<=blck.y&&this.y>=blck.y-blck.h)
             {
                 this.angle=Math.random()*(180-5)+5;
             }
-            else if(this.y<=hit.y+10&&this.y>=hit.y-10 && this.x>=hit.x-11 &&this.x<=hit.x+11)
+            if(this.y<=hit.y+11&&this.y>=hit.y-11 && this.x>=hit.x-11 &&this.x<=hit.x+11)
             {
                 console.log("hit");
                 this.touched=true;
-                DNA.push(this);
+                DNA.push(this.map);
                 console.log(DNA);
             }
         }
+        this.map.push(JSON.parse(JSON.stringify(this.angle)));
     }
 }
 function _goahead()
@@ -89,7 +112,7 @@ function _goahead()
     x.clearRect(0,0,temp.width,temp.height);
     if(shots.length==0)
     {   
-        for(i=1;i<=50;i++)
+        for(i=1;i<=1000;i++)
         {
             shots.push(new shot(1, Math.random()*(180-5)+5));
         }
