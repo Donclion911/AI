@@ -35,16 +35,15 @@ block=class{
         x.closePath();
     }
 }
-blck= new block(20,temp.height/2,1080,5);
+blck= new block(50,temp.height/2,1080,5);
 hit=new target(temp.width/2,40,30);
 shot=class{
-    constructor(speed,angle,path)
+    constructor(speed,angle)
     {
         this.x=temp.width/2;
         this.y=temp.height-20;
         this.speed=speed;
         this.angle=angle;
-        this.path=path;
         this.touched=false;
         this.map=[];
         this.step=0;
@@ -63,6 +62,13 @@ shot=class{
         {
             this.y-=this.speed*Math.sin(this.angle);
             this.x-=this.speed*Math.cos(this.angle);
+            if(this.angle==undefined)
+            {
+                this.y=temp.height-20;
+                this.x=temp.width/2;
+                this.force=null;
+                this.angle=Math.random()*(180-5)+5;
+            }
             if(this.y<=0||this.y>=temp.height)
             {
                 if(this.step>0)
@@ -75,14 +81,11 @@ shot=class{
                     if(this.force!=null)
                     {
                         this.angle=this.force[this.step];
-                        if(this.step<this.force.length-1)
-                        {
-                            this.step++;
-                        }
-                        else
+                        this.step++;
+                        if(this.step>=this.force.length)
                         {
                             this.step=0;
-                            this.force=DNA[DNA.length-1];
+                            this.force=DNA[Math.round(Math.random()*(DNA.length-1))];
                         }
                     }
                     else
@@ -97,7 +100,13 @@ shot=class{
             }
             if(this.x<=0||this.x>=temp.width)
             {
-                this.angle=Math.random()*(180-5)+5;
+                if(this.force!=null)
+                {
+                    this.angle=this.force[this.step];
+                    this.step++;
+                }
+                else
+                {this.angle=Math.random()*(180-5)+5;}
             }
             if(this.x>=blck.x+2&&this.x<=blck.x+blck.w&&this.y<=blck.y&&this.y>=blck.y-blck.h-25)
             {
@@ -111,7 +120,21 @@ shot=class{
                 console.log(DNA);
             }
         }
-        this.map.push(JSON.parse(JSON.stringify(this.angle)));
+            let unknown=this.angle;
+            this.map.forEach(
+                function(next)
+                {
+                    if(next==unknown)
+                    {
+                        unknown=false;
+                        return;
+                    }
+                }
+            )
+            if(unknown)
+            {
+                this.map.push(JSON.parse(JSON.stringify(this.angle)));
+            }
     }
 }
 function _goahead()
@@ -119,7 +142,7 @@ function _goahead()
     x.clearRect(0,0,temp.width,temp.height);
     if(shots.length==0)
     {   
-        for(i=1;i<=5000;i++)
+        for(i=1;i<=500;i++)
         {
             shots.push(new shot(1, Math.random()*(180-5)+5));
         }
