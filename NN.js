@@ -153,7 +153,7 @@ function _goahead()
     x.clearRect(0,0,temp.width,temp.height);
     if(shots.length==0)
     {   
-        for(i=1;i<=2000;i++)
+        for(i=1;i<=6000;i++)
         {
             shots.push(new shot(1, Math.random()*(180-5)+5));
         }
