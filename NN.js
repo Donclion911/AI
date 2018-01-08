@@ -118,18 +118,21 @@ shot=class{
             if(this.y<=hit.y+hit.size&&this.y>=hit.y-hit.size && this.x>=hit.x-hit.size &&this.x<=hit.x+hit.size)
             {
                 this.touched=true;
-                DNA.push(this.map);
+                if(DNA.length<=500)
+                {DNA.push(this.map);}
+                else{DNA.pop();DNA.push(this.map)}
                 this.angle=null;
                 this.map=null;
             }
             if(this.y<=hit2.y+hit2.size&&this.y>=hit2.y-hit2.size && this.x>=hit2.x-hit2.size &&this.x<=hit2.x+hit2.size)
             {
                 this.touched=true;
-                DNA.push(this.map);
+                if(DNA.length<=500)
+                {DNA.push(this.map);}
+                else{DNA.pop();DNA.push(this.map)}
                 this.angle=null;
                 this.map=null;
-            }
-            
+            }            
         }
         if(!this.touched)
         {
@@ -156,7 +159,7 @@ function _goahead()
     x.clearRect(0,0,temp.width,temp.height);
     if(shots.length==0)
     {   
-        for(i=1;i<=6000;i++)
+        for(i=1;i<=2500;i++)
         {
             shots.push(new shot(1, Math.random()*(180-5)+5));
         }
