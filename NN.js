@@ -67,6 +67,7 @@ shot=class{
             {
                 this.y=temp.height-20;
                 this.x=temp.width/2;
+                this.force=DNA[ Math.round(Math.random()*(DNA.length-1))];
                 this.angle=Math.random()*((180-5)+5);
             }
             if(this.y<=0||this.y>=temp.height)
@@ -86,12 +87,12 @@ shot=class{
                         if(this.step>=this.force.length)
                         {
                             this.step=0;
-                            this.force=DNA[ Math.round(Math.random()*(DNA.length-1))];
+                            this.force=DNA[0];
                         }
                     }
                     else
                     {
-                        this.force=DNA[DNA.length-1];
+                        this.force=DNA[0];
                     }
                 }
                 else
@@ -112,26 +113,16 @@ shot=class{
             if(this.x>=blck.x+2&&this.x<=blck.x+blck.w&&this.y<=blck.y&&this.y>=blck.y-blck.h-25)
             {
                 this.y=temp.height;
-                this.force=null;
                 this.angle=Math.random()*((180-5)+5);
+                this.force=null;
             }
             if(this.y<=hit.y+hit.size&&this.y>=hit.y-hit.size && this.x>=hit.x-hit.size &&this.x<=hit.x+hit.size)
             {
-                this.touched=true;
-                if(DNA.length<=500)
-                {DNA.push(this.map);}
-                else{DNA.pop();DNA.push(this.map)}
-                this.angle=null;
-                this.map=null;
+                _learning(this);
             }
             if(this.y<=hit2.y+hit2.size&&this.y>=hit2.y-hit2.size && this.x>=hit2.x-hit2.size &&this.x<=hit2.x+hit2.size)
             {
-                this.touched=true;
-                if(DNA.length<=500)
-                {DNA.push(this.map);}
-                else{DNA.pop();DNA.push(this.map)}
-                this.angle=null;
-                this.map=null;
+                _learning(this);
             }            
         }
         if(!this.touched)
@@ -154,12 +145,23 @@ shot=class{
         }
     }
 }
+function _learning(obj)
+{
+        obj.touched=true;
+        if(DNA.length<20 && obj.map.length<15)
+        {DNA.push(obj.map);}
+        else{
+            if(obj.map.length<=5){DNA.pop();DNA.push(obj.map)}
+        }
+        obj.angle=null;
+        obj.map=null;
+}
 function _goahead()
 {
     x.clearRect(0,0,temp.width,temp.height);
     if(shots.length==0)
     {   
-        for(i=1;i<=2500;i++)
+        for(i=1;i<=5000;i++)
         {
             shots.push(new shot(1, Math.random()*(180-5)+5));
         }
