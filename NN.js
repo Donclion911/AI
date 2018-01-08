@@ -117,20 +117,22 @@ shot=class{
             }
             if(this.y<=hit.y+hit.size&&this.y>=hit.y-hit.size && this.x>=hit.x-hit.size &&this.x<=hit.x+hit.size)
             {
-                console.log("hit");
                 this.touched=true;
                 DNA.push(this.map);
-                console.log(DNA);
+                this.angle=null;
+                this.map=null;
             }
             if(this.y<=hit2.y+hit2.size&&this.y>=hit2.y-hit2.size && this.x>=hit2.x-hit2.size &&this.x<=hit2.x+hit2.size)
             {
-                console.log("hit");
                 this.touched=true;
                 DNA.push(this.map);
-                console.log(DNA);
+                this.angle=null;
+                this.map=null;
             }
             
         }
+        if(!this.touched)
+        {
             let unknown=this.angle;
             this.map.forEach(
                 function(next)
@@ -146,6 +148,7 @@ shot=class{
             {
                 this.map.push(JSON.parse(JSON.stringify(this.angle)));
             }
+        }
     }
 }
 function _goahead()
