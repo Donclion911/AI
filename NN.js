@@ -35,7 +35,9 @@ block=class{
         x.closePath();
     }
 }
-blck= new block(40,temp.height/2,1080,5);
+blck= new block(40,temp.height/2,200,5);
+blck2= new block(300,temp.height/2,730,5);
+
 hit=new target(temp.width/2,40,30);
 hit2=new target(200,80,35);
 shot=class{
@@ -116,6 +118,12 @@ shot=class{
                 this.angle=Math.random()*((180-5)+5);
                 this.force=null;
             }
+            if(this.x>=blck2.x+2&&this.x<=blck2.x+blck2.w&&this.y<=blck2.y&&this.y>=blck2.y-blck2.h-25)
+            {
+                this.y=temp.height;
+                this.angle=Math.random()*((180-5)+5);
+                this.force=null;
+            }
             if(this.y<=hit.y+hit.size&&this.y>=hit.y-hit.size && this.x>=hit.x-hit.size &&this.x<=hit.x+hit.size)
             {
                 _learning(this);
@@ -148,10 +156,13 @@ shot=class{
 function _learning(obj)
 {
         obj.touched=true;
-        if(DNA.length<20 && obj.map.length<15)
+        if(DNA.length<20 && obj.map.length<=15)
         {DNA.push(obj.map);}
         else{
-            if(obj.map.length<=5){DNA.pop();DNA.push(obj.map)}
+            if(obj.map.length<=5)
+            {
+                DNA.pop();DNA.push(obj.map)
+            }
         }
         obj.angle=null;
         obj.map=null;
@@ -161,7 +172,7 @@ function _goahead()
     x.clearRect(0,0,temp.width,temp.height);
     if(shots.length==0)
     {   
-        for(i=1;i<=5000;i++)
+        for(i=1;i<=3000;i++)
         {
             shots.push(new shot(1, Math.random()*(180-5)+5));
         }
@@ -169,6 +180,7 @@ function _goahead()
     hit.show();
     hit2.show();
     blck.show();
+    blck2.show();
     shots.forEach(function(next) {
         next.show();
     });
